@@ -1450,11 +1450,11 @@ function downloadResume() {
 
 // Enhanced social media functions
 function openLinkedIn() {
-    window.open('https://www.linkedin.com/in/emran58242100/', '_blank');
+    window.open('https://www.linkedin.com/in/emranhossainx1/', '_blank');
 }
 
 function openGitHub() {
-    window.open('https://github.com/emran58242100', '_blank');
+    window.open('https://github.com/emranhossainx1', '_blank');
 }
 
 function viewResume() {
