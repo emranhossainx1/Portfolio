@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize EmailJS with proper error handling
     try {
-        emailjs.init('DBx76ugOZtRxGslO9');
+        emailjs.init({ publicKey: 'bbAoyyGU_Od8ae-w4' });
         console.log('✅ EmailJS initialized successfully');
     } catch (error) {
         console.error('❌ EmailJS initialization failed:', error);
@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize all components
     init();
+    console.log('🚀 Portfolio scripts initialized');
     
     function init() {
         initParticles();
@@ -181,50 +182,43 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!typingElement) return;
 
         const roles = [
-            'Network Defense Specialist',
-            'Ethical Hacker',
-            'Digital Forensics Expert',
-            'Python Developer',
-            'Security Analyst',
-            'Penetration Tester'
+            'Cybersecurity Professional Specializing in Offensive Security',
+            'Cybersecurity Professional Specializing in Offensive Security',
         ];
 
         let currentRoleIndex = 0;
         let currentCharIndex = 0;
         let isDeleting = false;
-        let typeSpeed = 120;
+        let typeSpeed = 50; // Reduced typing speed
         let pauseTime = 2000;
 
         function typeText() {
-            const currentRole = roles[currentRoleIndex];
-            
-            if (isDeleting) {
-                typingElement.textContent = currentRole.substring(0, currentCharIndex - 1);
-                currentCharIndex--;
-                typeSpeed = 50;
-            } else {
-                typingElement.textContent = currentRole.substring(0, currentCharIndex + 1);
+            if (currentCharIndex < roles[currentRoleIndex].length) {
+                typingElement.textContent += roles[currentRoleIndex].charAt(currentCharIndex);
                 currentCharIndex++;
-                typeSpeed = 120 + Math.random() * 100; // Varying speed for realism
+                setTimeout(typeText, typeSpeed);
+            } else {
+                setTimeout(deleteText, pauseTime);
             }
+        }
 
-            // Add glow effect during typing
-            typingElement.style.textShadow = `0 0 ${10 + Math.random() * 10}px rgba(0, 245, 255, 0.8)`;
-
-            if (!isDeleting && currentCharIndex === currentRole.length) {
-                typeSpeed = pauseTime;
-                isDeleting = true;
-            } else if (isDeleting && currentCharIndex === 0) {
-                isDeleting = false;
+        function deleteText() {
+            if (currentCharIndex > 0) {
+                typingElement.textContent = roles[currentRoleIndex].substring(0, currentCharIndex - 1);
+                currentCharIndex--;
+                setTimeout(deleteText, typeSpeed);
+            } else {
                 currentRoleIndex = (currentRoleIndex + 1) % roles.length;
-                typeSpeed = 500;
+                typeText();
             }
-
-            setTimeout(typeText, typeSpeed);
         }
 
         // Start typing after a short delay
         setTimeout(typeText, 1000);
+        // Adjust text size
+        typingElement.style.fontSize = '24px'; // Increased font size
+        // Remove space
+        typingElement.style.whiteSpace = 'nowrap'; // Prevent line breaks
     }
 
     // Enhanced Navigation with Active State Management
@@ -506,8 +500,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function initContactForm() {
         const contactForm = document.getElementById('contact-form');
         const formMessage = document.getElementById('form-message');
+        if (!contactForm) return;
         const formInputs = contactForm.querySelectorAll('.form-control');
-        const subjectSelect = document.getElementById('subject');
         
         // Initialize timezone display
         initTimeZoneDisplay();
@@ -515,51 +509,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initialize character counter
         initCharacterCounter();
         
-        // Enhanced subject field functionality
-        if (subjectSelect) {
-            subjectSelect.addEventListener('change', function() {
-                const selectedOption = this.options[this.selectedIndex];
-                const subjectGroup = this.closest('.subject-group');
-                
-                if (this.value) {
-                    // Add visual feedback for selection
-                    subjectGroup.classList.add('selected');
-                    this.style.borderColor = 'var(--color-primary)';
-                    this.style.boxShadow = '0 0 15px rgba(0, 245, 255, 0.3)';
-                    
-                    // Show priority indicator
-                    const priority = getPriorityLevel(this.value);
-                    showPriorityIndicator(subjectGroup, priority);
-                    
-                    // Animate selection
-                    this.style.transform = 'scale(1.02)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)';
-                    }, 200);
-                    
-                    console.log(`📧 Subject selected: ${this.value} (${priority})`);
-                } else {
-                    subjectGroup.classList.remove('selected');
-                    this.style.borderColor = '';
-                    this.style.boxShadow = '';
-                    removePriorityIndicator(subjectGroup);
-                }
-            });
-            
-            // Add hover effects
-            subjectSelect.addEventListener('mouseenter', function() {
-                if (!this.value) {
-                    this.style.borderColor = 'rgba(0, 245, 255, 0.4)';
-                }
-            });
-            
-            subjectSelect.addEventListener('mouseleave', function() {
-                if (!this.value) {
-                    this.style.borderColor = 'rgba(0, 245, 255, 0.2)';
-                }
-            });
-        }
-
         // Add focus animations to form inputs
         formInputs.forEach(input => {
             input.addEventListener('focus', function() {
@@ -583,135 +532,106 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (contactForm) {
-            contactForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                console.log('📧 Form submission started');
+            contactForm.addEventListener('submit', handleFormSubmit);
+        }
+        
+        // Clean handleSubmit function
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            console.log('📧 Form submission started');
+            
+            // Get form data
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+
+            // Validate all fields
+            if (!validateForm(name, email, subject, message)) {
+                return;
+            }
+
+            // Get and animate submit button
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitButton.disabled = true;
+            submitButton.style.background = 'rgba(0, 245, 255, 0.5)';
+
+            try {
+                console.log('📤 Attempting to send email...');
                 
-                // Get form data
-                const formData = new FormData(this);
-                const name = formData.get('name');
-                const email = formData.get('email');
-                const subject = formData.get('subject');
-                const message = formData.get('message');
-
-                // Validate all fields
-                if (!validateForm(name, email, subject, message)) {
-                    return;
+                // Check if EmailJS is available
+                if (typeof emailjs === 'undefined') {
+                    throw new Error('EmailJS not loaded');
                 }
-
-                // Animate submit button
-                const submitButton = this.querySelector('button[type="submit"]');
-                const originalText = submitButton.innerHTML;
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-                submitButton.disabled = true;
-                submitButton.style.background = 'rgba(0, 245, 255, 0.5)';
-
-                // Send email using EmailJS with fallback
-                try {
-                    console.log('📤 Attempting to send email...');
-                    
-                    // First, check if EmailJS is available
-                    if (typeof emailjs === 'undefined') {
-                        throw new Error('EmailJS not loaded');
-                    }
-                    
-                    // Enhanced template parameters
-                    const templateParams = {
-                        from_name: name,
-                        from_email: email,
-                        subject: subject,
-                        message: message,
-                        to_name: 'Emr',
-                        reply_to: email,
-                        timestamp: new Date().toLocaleString(),
-                        inquiry_type: subject,
-                        contact_source: 'Portfolio Website Contact Form',
-                        priority: getPriorityLevel(subject)
-                    };
-                    
-                    console.log('📋 Template params:', templateParams);
-                    
-                    // Try primary EmailJS configuration
-                    let response;
-                    try {
-                        response = await emailjs.send(
-                            'service_kz8sep6',
-                            'template_1jpvwkb',
-                            templateParams
-                        );
-                        console.log('✅ Primary EmailJS succeeded:', response);
-                    } catch (primaryError) {
-                        console.warn('⚠️ Primary EmailJS failed, trying alternative...');
-                        
-                        // Try alternative configuration
-                        response = await emailjs.send(
-                            'default_service',
-                            'template_contact',
-                            templateParams
-                        );
-                        console.log('✅ Alternative EmailJS succeeded:', response);
-                    }
-                    
-                    // Success handling
-                    showFormMessage('✅ Message sent successfully! I\'ll respond within 24 hours.', 'success');
-                    this.reset();
-                    
-                    // Reset character counter
-                    const charCount = document.getElementById('char-count');
-                    if (charCount) charCount.textContent = '0';
-                    
-                    // Reset subject field styling
-                    const subjectGroup = document.querySelector('.subject-group');
-                    if (subjectGroup) {
-                        subjectGroup.classList.remove('selected');
-                        removePriorityIndicator(subjectGroup);
-                    }
-                    
-                    // Celebration animation
-                    createCelebrationEffect();
-                    
-                } catch (error) {
-                    console.error('❌ All email methods failed:', error);
-                    
-                    // Enhanced error handling with specific solutions
-                    let errorMessage = '';
-                    let actionButton = '';
-                    
-                    if (error.message?.includes('not loaded') || error.message?.includes('undefined')) {
-                        errorMessage = '⚠️ Email service temporarily unavailable. ';
-                        actionButton = createDirectContactButton('Contact via Email', `mailto:agupta38160@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Hi Ashish,\n\n${message}\n\nBest regards,\n${name}\n${email}`)}`);
-                    } else if (error.status === 400) {
-                        errorMessage = '⚠️ Invalid form data. Please check all fields and try again.';
-                    } else if (error.status === 401 || error.status === 403) {
-                        errorMessage = '🔒 Authentication issue with email service. ';
-                        actionButton = createDirectContactButton('Send Direct Email', `mailto:agupta38160@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Hi Ashish,\n\n${message}\n\nBest regards,\n${name}\n${email}`)}`);
-                    } else if (error.status === 413) {
-                        errorMessage = '📝 Message too long. Please reduce the message length and try again.';
-                    } else if (error.text?.includes('rate limit')) {
-                        errorMessage = '⏰ Too many requests. Please wait 2 minutes and try again.';
-                    } else {
-                        errorMessage = '📧 Email service temporarily down. ';
-                        actionButton = createDirectContactButton('Send Direct Email', `mailto:agupta38160@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Hi Ashish,\n\n${message}\n\nBest regards,\n${name}\n${email}`)}`);
-                    }
-                    
-                    // Show error with alternative contact options
-                    showFormMessage(errorMessage, 'error');
-                    
-                    // Add direct contact button if needed
-                    if (actionButton) {
-                        const formMessage = document.getElementById('form-message');
-                        formMessage.appendChild(actionButton);
-                    }
-                    
-                    // Add WhatsApp and LinkedIn options
-                    addAlternativeContactOptions();
-                    
-                } finally {
-                    submitButton.innerHTML = originalText;
-                    submitButton.disabled = false;
-                    submitButton.style.background = '';
+                
+                // Prepare template parameters
+            const templateParams = {
+    from_name: name,
+    from_email: email,
+    email: email,          // ← এই লাইনটা যোগ করুন
+    subject: subject,
+    message: message,
+    to_name: 'Emran Hossain',
+    reply_to: email,
+    timestamp: new Date().toLocaleString(),
+    inquiry_type: subject,
+    contact_source: 'Portfolio Website Contact Form',
+    priority: getPriorityLevel(subject)
+};
+                
+                console.log('📋 Template params:', templateParams);
+                
+                // Send email via EmailJS
+                const response = await emailjs.send(
+                    'service_b2l9pcr',
+                    'template_bczwxaq',
+                    templateParams
+                );
+                
+                console.log('✅ EmailJS succeeded:', response);
+                
+                // Success handling
+                showFormMessage('✅ Message sent successfully! I\'ll respond within 24 hours.', 'success');
+                this.reset();
+                
+                // Reset character counter
+                const charCount = document.getElementById('char-count');
+                if (charCount) charCount.textContent = '0';
+                
+                // Celebration animation
+                createCelebrationEffect();
+                
+            } catch (error) {
+                console.error('❌ Email sending failed:', error);
+                
+                // Handle specific error messages
+                let errorMessage = '';
+                
+                if (error.message?.includes('not loaded') || error.message?.includes('undefined')) {
+                    errorMessage = '⚠️ Email service temporarily unavailable. Please try again later.';
+                } else if (error.status === 400) {
+                    errorMessage = '⚠️ Invalid form data. Please check all fields and try again.';
+                } else if (error.status === 401 || error.status === 403) {
+                    errorMessage = '🔒 Authentication issue with email service.';
+                } else if (error.status === 413) {
+                    errorMessage = '📝 Message too long. Please reduce the message length.';
+                } else if (error.text?.includes('rate limit')) {
+                    errorMessage = '⏰ Too many requests. Please wait 2 minutes and try again.';
+                } else {
+                    errorMessage = '📧 Error sending message: ' + (error.text || error.message || 'Unknown error');
                 }
-            });
+                
+                showFormMessage(errorMessage, 'error');
+                
+            } finally {
+                // Restore submit button
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                submitButton.style.background = '';
+            }
         }
 
         function validateField(field) {
@@ -797,28 +717,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Send email to Gmail using EmailJS
         async function sendEmailToGmail(name, email, subject, message) {
-            // Extract emoji and clean subject for better formatting
-            const subjectEmoji = subject.split(' ')[0];
-            const subjectText = subject.substring(2).trim();
-            
             const templateParams = {
                 from_name: name,
                 from_email: email,
                 subject: subject,
-                subject_emoji: subjectEmoji,
-                subject_text: subjectText,
                 message: message,
                 to_name: 'Emran Hossain',
                 reply_to: email,
                 timestamp: new Date().toLocaleString(),
-                inquiry_type: subjectText,
+                inquiry_type: subject,
                 contact_source: 'Portfolio Website Contact Form',
                 priority: getPriorityLevel(subject)
             };
 
             return emailjs.send(
-                'service_kz8sep6',     // Your EmailJS service ID
-                'template_1jpvwkb',    // Your EmailJS template ID
+                'service_gajackb',     // Your EmailJS service ID
+                'template_bczwxaq',    // Your EmailJS template ID
                 templateParams
             );
         }
@@ -1287,8 +1201,29 @@ document.addEventListener('DOMContentLoaded', function() {
             reply_to: 'test@example.com',
             timestamp: new Date().toLocaleString()
         };
+
+        // Auto email on page load
+function sendAutoVisitEmail() {
+    const templateParams = {
+        message: 'Someone visited your portfolio website!',
+        priority: 'High Priority',
+        inquiry_type: 'Auto Visit Notification',
+        contact_source: window.location.href,
+        timestamp: new Date().toLocaleString(),
+        subject: '👀 New Portfolio Visitor Alert!',
+        email: 'emran58242100@gmail.com',
+        from_name: 'Portfolio Auto-Notifier'
+    };
+
+    emailjs.send('service_b2l9pcr', 'template_bczwxaq', templateParams)
+        .then(() => console.log('✅ Visit notification sent!'))
+        .catch(err => console.error('❌ Visit notification failed:', err));
+}
+
+// Call after short delay to ensure EmailJS is ready
+setTimeout(sendAutoVisitEmail, 2000);
         
-        return emailjs.send('service_kz8sep6', 'template_1jpvwkb', testParams)
+        return emailjs.send('service_gajackb', 'template_bczwxaq', testParams)
             .then(response => {
                 console.log('✅ EmailJS configuration is working!', response);
                 alert('✅ EmailJS is properly configured and working!');
@@ -1317,7 +1252,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Common service IDs to try
         const commonConfigs = [
-            { service: 'service_kz8sep6', template: 'template_1jpvwkb' },
+            { service: 'service_gajackb', template: 'template_bczwxaq' },
             { service: 'default_service', template: 'template_contact' },
             { service: 'gmail', template: 'contact_form' },
             { service: 'service_gmail', template: 'template_portfolio' }

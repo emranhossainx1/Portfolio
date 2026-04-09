@@ -13,6 +13,11 @@
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <meta name="description" content="Emran Hossain - Cybersecurity Student & Developer specializing in ethical hacking, network security, and digital forensics. Currently pursuing B.Tech in Cyber Security at NIET Greater Noida.">
+    <script type="text/javascript">
+    (function(){
+        emailjs.init({ publicKey: "bbAoyyGU_Od8ae-w4" });
+    })();
+</script>
 </head>
 <body>
     <!-- Particles.js Background -->
@@ -53,14 +58,13 @@
                 <span class="name-primary">Emran</span>
                 <span class="name-secondary">Hossain</span>
             </h1>
-            <h1 class="hero-subtitle">Cybersecurity Professional Specializing in Offensive Security</h1>
-            <p class="hero-description">Cybersecurity Professional Specializing in Offensive Security with strong hands-on experience in web application security, vulnerability research, and responsible disclosure.</p>
-            <!--
-            <div class="typing-container">
-                <span class="typing-prefix">I am a</span>
+             <div class="typing-container">
                 <span class="typing-text" id="typing-text"></span>
                  </div>
-        -->
+            <p class="hero-description">Cybersecurity Professional Specializing in Offensive Security with strong hands-on experience in web application security, vulnerability research, and responsible disclosure.</p>
+            
+           
+        
                 <span class="cursor"></span>
            
             <div class="hero-buttons">
@@ -123,7 +127,9 @@
                             <div class="image-glow"></div>
                         </div>
                     </div>
-                    <p class="about-description">
+                    <div class="about-sub">
+                        <div>
+                        <p class="about-description">
 I am a dedicated cybersecurity professional with practical expertise in web application penetration testing, vulnerability analysis, and bug bounty hunting. I have successfully discovered and responsibly disclosed high-impact security vulnerabilities across real-world platforms, helping organizations strengthen their security posture.
 
 I am recognized as a Top 1% global performer on both TryHackMe and the PortSwigger Web Security Academy, where I continuously sharpen my skills through advanced labs and real-world attack simulations.
@@ -131,6 +137,7 @@ I am recognized as a Top 1% global performer on both TryHackMe and the PortSwigg
 I hold the Google Cybersecurity Certificate, validating my hands-on knowledge in security operations, incident response, and modern threat defense.
 
 Cybersecurity is not just my profession—it is my long-term commitment.  </p>
+                    </div>
                     <!--
                  
                     <div class="about-highlights">
@@ -203,6 +210,7 @@ Cybersecurity is not just my profession—it is my long-term commitment.  </p>
                         </div>
                     </div>
                 </div>
+                    </div>
             </div>
         </div>
     </section>
@@ -871,23 +879,18 @@ Completed an undergraduate degree with a strong foundation in computer science f
                     </div> -->
                     
                     <div class="form-group">
-                        <label for="message" class="form-label">
-                            <i class="fas fa-comment-dots"></i>
+                        <label for="subject" class="form-label">
+                            <i class="fas fa-tag"></i>
                             Subject
                         </label>
-                        <input id="message" name="message" class="form-control" rows="6" required 
-                                  placeholder="Write a subject for your message..."
-                                  maxlength="1000">
-                    </input>
+                        <input type="text" id="subject" name="subject" class="form-control" required placeholder="What is this about?">
                         <div class="input-line"></div>
-                        <!-- <div class="char-counter">
-                            <span id="char-count">0</span>/100 characters
-                        </div> -->
                     </div>
+                    
                     <div class="form-group">
                         <label for="message" class="form-label">
                             <i class="fas fa-comment-dots"></i>
-                            Your Message
+                            Message
                         </label>
                         <textarea id="message" name="message" class="form-control" rows="6" required 
                                   placeholder="Tell me about your project, opportunity, or inquiry. The more details you provide, the better I can assist you..."
