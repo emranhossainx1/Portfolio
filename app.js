@@ -1386,7 +1386,7 @@ Date: ${new Date().toLocaleString()}
 // Global utility functions for contact actions
 function downloadResume() {
     // Convert Google Drive view link to direct download link
-    const resumeUrl = 'https://drive.google.com/uc?export=download&id=18JGBMnPN5GvSSG-aWVVbQhLRoqvio1ut';
+    const resumeUrl = 'https://drive.google.com/uc?export=download&id=1arSMlia9_FOzYC4QdwAqh393rmKvlOvU';
     
     // Create a sophisticated notification for resume download
     const notification = document.createElement('div');
