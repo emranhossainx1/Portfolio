@@ -936,6 +936,13 @@ body {
     animation: fadeInUp 1s ease-out;
 }
 
+@media (max-width: 768px) {
+    .hero-content {
+        max-width: calc(100vw - 32px);
+        padding: 0 var(--space-16);
+    }
+}
+
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
@@ -1022,10 +1029,20 @@ body {
     height: 10px;
     margin-bottom: var(--space-32);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: var(--space-8);
     animation: slideInUp 1s ease-out 0.8s both;
+}
+
+@media (max-width: 768px) {
+    .typing-container {
+        height: auto;
+        line-height: 1.5;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
 }
 
 .typing-prefix {
@@ -1037,12 +1054,22 @@ body {
     font-size: var(--font-size-xl);
     color: #00f5ff;
     min-width: 350px;
-    text-align: left;
+    text-align: center;
     font-weight: var(--font-weight-semibold);
     word-break: break-word;
     white-space: normal;
-    display: inline-block;
+    display: block;
     max-width: 90vw;
+}
+
+@media (max-width: 768px) {
+    .typing-text {
+        font-size: 12px;
+        min-width: auto;
+        max-width: calc(100vw - 32px);
+        display: block;
+        text-align: center;
+    }
 }
 
 .cursor {
@@ -1239,6 +1266,12 @@ body {
     background: rgba(16, 21, 62, 0.1);
 }
 
+@media (max-width: 768px) {
+    .about-section {
+        padding: 2rem var(--space-16) 0.5rem var(--space-16);
+    }
+}
+
 .about-content {
     gap: 4rem;
     align-items: start;
@@ -1248,17 +1281,29 @@ body {
 
 
 .about-sub{
-display: grid;
-grid-template-columns: 1fr 1fr;
-align-items: start;
-gap: 60px;
-text-align: justify;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 60px;
+    text-align: justify;
+}
+
+@media (max-width: 768px) {
+    .about-sub {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
 }
 .profile-image-container {
     display: flex;
     justify-content: center;
     margin: 200px 0 100px  0;
-    
+}
+
+@media (max-width: 768px) {
+    .profile-image-container {
+        margin: 30px 0 20px 0;
+    }
 }
 
 .profile-image {
@@ -1405,6 +1450,12 @@ text-align: justify;
     background: rgba(10, 10, 10, 0.5);
 }
 
+@media (max-width: 768px) {
+    .experience-section {
+        padding: 0.5rem var(--space-16) 3rem var(--space-16);
+    }
+}
+
 .experience-timeline {
     max-width: 1000px;
     margin: 0 auto;
@@ -1421,6 +1472,12 @@ text-align: justify;
     border-radius: 1px;
 }
 
+@media (max-width: 768px) {
+    .timeline-line {
+        left: 15px;
+    }
+}
+
 .experience-item {
     display: flex;
     align-items: flex-start;
@@ -1429,6 +1486,14 @@ text-align: justify;
     padding: var(--space-32);
     position: relative;
     transition: all var(--duration-normal) var(--ease-standard);
+}
+
+@media (max-width: 768px) {
+    .experience-item {
+        gap: var(--space-16);
+        margin-bottom: 2rem;
+        padding: var(--space-16);
+    }
 }
 
 .experience-item:hover {
@@ -1449,6 +1514,16 @@ text-align: justify;
     font-size: var(--font-size-xl);
     position: relative;
     z-index: 2;
+}
+
+@media (max-width: 768px) {
+    .timeline-dot {
+        width: 45px;
+        height: 45px;
+        border-width: 2px;
+        font-size: var(--font-size-base);
+        margin-top: 2px;
+    }
 }
 
 .experience-content {
@@ -2599,12 +2674,6 @@ text-align: justify;
         font-size: 3rem;
     }
     
-    .typing-text {
-        min-width: 100%;
-        font-size: var(--font-size-base);
-        max-width: 100%;
-    }
-    
     .contact-content {
         grid-template-columns: 1fr;
         gap: 30px;
@@ -3046,6 +3115,19 @@ text-align: justify;
     }
 }
 
+/* Reduce section title spacing on small screens to remove gap between sections */
+@media (max-width: 768px) {
+    .section-title {
+        margin-bottom: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-title {
+        margin-bottom: 0.9rem;
+    }
+}
+
 @media (max-width: 480px) {
     .hero-section,
     .about-section,
@@ -3055,6 +3137,10 @@ text-align: justify;
     .education-section,
     .contact-section {
         padding: 3rem var(--space-16);
+    }
+    /* Reduce vertical padding specifically for About section to remove extra blank space */
+    .about-section {
+        padding: 1.25rem var(--space-16) 0.5rem;
     }
     
     .contact-content {
@@ -3162,12 +3248,6 @@ text-align: justify;
         font-size: 2.5rem;
     }
     
-    .typing-text {
-        min-width: 100%;
-        font-size: var(--font-size-sm);
-        max-width: 100%;
-    }
-    
     .about-sub {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -3182,7 +3262,65 @@ text-align: justify;
         height: 120px;
         font-size: 2.5rem;
     }
+
+    /* Tight mobile overrides to remove remaining blank space below About */
+    .about-section {
+        /* keep small top padding but remove bottom padding entirely */
+        padding: 0.9rem var(--space-16) 0.1rem !important;
+    }
+
+    .about-content {
+        margin-bottom: 0 !important;
+        gap: 1rem;
+    }
+
+    .profile-image-container {
+        margin: 12px 0 8px !important;
+    }
+
+    .about-stats {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .stats-grid .stat-item {
+        padding: 8px !important;
+    }
     
+
+/* Also make sure widths <768px tighten spacing consistently */
+@media (max-width: 768px) {
+    .about-section {
+        padding: 0.9rem var(--space-16) 0.25rem !important;
+    }
+
+    .section-title {
+        margin-bottom: 0.6rem !important;
+    }
+
+    .about-content {
+        gap: 1rem !important;
+    }
+
+    .profile-image-container {
+        margin: 18px 0 10px !important;
+    }
+
+    .about-stats {
+        margin-bottom: 0 !important;
+    }
+
+    .stats-grid .stat-item {
+        padding: 10px !important;
+    }
+}
+
+/* Add a little breathing room below About on small screens as requested */
+@media (max-width: 768px) {
+    .about-section {
+        margin-bottom: 30px !important;
+    }
+}
     .social-links {
         gap: var(--space-12);
     }

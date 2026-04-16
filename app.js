@@ -215,10 +215,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Start typing after a short delay
         setTimeout(typeText, 1000);
-        // Adjust text size
-        typingElement.style.fontSize = '24px'; // Increased font size
-        // Remove space
-        typingElement.style.whiteSpace = 'nowrap'; // Prevent line breaks
+
+        // Apply responsive inline styles so mobile can use 12px and wrap
+        function applyTypingResponsiveStyles() {
+            if (window.innerWidth < 768) {
+                typingElement.style.fontSize = '12px';
+                typingElement.style.whiteSpace = 'normal'; // allow wrapping on mobile
+                typingElement.style.minWidth = 'auto';
+            } else {
+                typingElement.style.fontSize = '24px';
+                typingElement.style.whiteSpace = 'nowrap'; // keep desktop single-line effect
+                typingElement.style.minWidth = '350px';
+            }
+        }
+
+        applyTypingResponsiveStyles();
+        window.addEventListener('resize', applyTypingResponsiveStyles);
     }
 
     // Enhanced Navigation with Active State Management
@@ -939,14 +951,22 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function updateParallax() {
             const scrolled = window.scrollY;
-            
+            // Disable heavy parallax on small screens to avoid large translate offsets
+            if (window.innerWidth < 768) {
+                parallaxElements.forEach(el => {
+                    // remove any transform applied earlier
+                    el.style.transform = '';
+                });
+                return;
+            }
+
             parallaxElements.forEach((element, index) => {
-                const rate = scrolled * -0.5;
+                // Use a gentler parallax rate on larger screens
+                const rate = scrolled * -0.2;
                 const yPos = rate / (index + 1);
                 element.style.transform = `translateY(${yPos}px)`;
             });
         }
-
         let ticking = false;
         window.addEventListener('scroll', function() {
             if (!ticking) {
@@ -957,6 +977,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 ticking = true;
             }
         });
+
+        // Also update on resize so transforms are corrected when switching sizes
+        window.addEventListener('resize', function() {
+            updateParallax();
+        });
+
+        // Run once on init to ensure correct starting transform
+        updateParallax();
     }
 
     // Project Card Hover Animations
@@ -1058,9 +1086,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateTypingTextWidth() {
         const typingText = document.getElementById('typing-text');
-        if (typingText && window.innerWidth < 768) {
-            typingText.style.minWidth = '250px';
-        } else if (typingText) {
+        if (!typingText) return;
+        // Avoid forcing a wide min-width on small screens which causes overflow.
+        if (window.innerWidth < 768) {
+            typingText.style.minWidth = 'auto';
+        } else {
             typingText.style.minWidth = '350px';
         }
     }
@@ -1321,8 +1351,8 @@ Date: ${new Date().toLocaleString()}
 // Global utility functions for contact actions
 function downloadResume() {
     // Convert Google Drive view link to direct download link
-    const resumeUrl = 'https://drive.google.com/uc?export=download&id=1arSMlia9_FOzYC4QdwAqh393rmKvlOvU';
-    
+    const resumeUrl = 'https://drive.google.com/uc?export=download&id=1EynG-KAElENcfl0tmKANgXg9gEFr29QP';
+   
     // Create a sophisticated notification for resume download
     const notification = document.createElement('div');
     notification.style.cssText = `
@@ -1394,7 +1424,7 @@ function openGitHub() {
 
 function viewResume() {
     // Open resume in Google Drive viewer
-    window.open('https://drive.google.com/file/d/18JGBMnPN5GvSSG-aWVVbQhLRoqvio1ut/view?usp=drive_link', '_blank');
+    window.open('https://drive.google.com/file/d/1EynG-KAElENcfl0tmKANgXg9gEFr29QP/view?usp=sharing', '_blank');
 }
 
 function sendEmail() {
